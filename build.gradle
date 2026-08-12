@@ -1,0 +1,73 @@
+plugins {
+    id 'java'
+}
+
+group = 'dev.ntgame'
+
+// Auto-incrementing build number so every build produces a distinct jar
+// (OverEnchant-1.0.<n>.jar) instead of always overwriting the same file.
+// The counter lives in version.properties and is bumped by incrementBuildNumber,
+// which only runs when the jar is actually built (wired below via jar.dependsOn).
+def versionPropsFile = file('version.properties')
+
+def readBuildNumber = {
+    Properties props = new Properties()
+    if (versionPropsFile.exists()) {
+        versionPropsFile.withInputStream { props.load(it) }
+    }
+    return (props.getProperty('buildNumber', '0') as int)
+}
+
+version = "1.0.${readBuildNumber() + 1}"
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+}
+
+dependencies {
+    // Minecraft 1.26.2 - Paper switched to the <mc>.build.<n>-<channel> scheme
+    compileOnly "io.papermc.paper:paper-api:26.2.build.102-stable"
+}
+
+// Paper 1.26 is built for Java 25.
+def targetJavaVersion = 25
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release.set(targetJavaVersion)
+    options.compilerArgs << '-Xlint:deprecation' << '-Xlint:removal' << '-Xlint:unchecked'
+}
+
+tasks.named('jar') {
+    archiveBaseName.set('OverEnchant')
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset = 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+tasks.register('incrementBuildNumber') {
+    doLast {
+        Properties props = new Properties()
+        if (versionPropsFile.exists()) {
+            versionPropsFile.withInputStream { props.load(it) }
+        }
+        int next = (props.getProperty('buildNumber', '0') as int) + 1
+        props.setProperty('buildNumber', next.toString())
+        versionPropsFile.withOutputStream { props.store(it, 'OverEnchant auto build number - do not edit by hand') }
+    }
+}
+
+jar.dependsOn incrementBuildNumber

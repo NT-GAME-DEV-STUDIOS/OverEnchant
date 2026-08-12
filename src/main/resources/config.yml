@@ -1,0 +1,75 @@
+# OverEnchant
+#
+# Lets an anvil combine two items/books that already share an enchantment at the
+# same level into a level ONE HIGHER than either of them - exactly like vanilla
+# already does (V + V = VI) - except the result is no longer capped at the
+# enchantment's normal maximum. Each enchantment below defines its own "cap":
+# the highest level obtainable this way. Levels above vanilla's own max still
+# only come from combining two items that already carry that enchantment.
+#
+# "max-effect: instamine" (currently only used on efficiency) makes a tool break
+# any block instantly, regardless of hardness, once it reaches its cap.
+
+anvil:
+  # Extra XP levels charged per level gained ABOVE the enchantment's normal vanilla
+  # max level. Levels within the vanilla range still use normal vanilla anvil cost.
+  # If merges above the vanilla cap show "Too Expensive!" for survival players,
+  # raise `settings.anvil-max-repair-cost` in spigot.yml (or set it to -1).
+  xp-cost-per-overlevel: 3
+
+enchantments:
+  efficiency:
+    cap: 15
+    max-effect: instamine
+  sharpness:
+    cap: 10
+  smite:
+    cap: 10
+  bane_of_arthropods:
+    cap: 10
+  power:
+    cap: 10
+  protection:
+    cap: 10
+  projectile_protection:
+    cap: 10
+  blast_protection:
+    cap: 10
+  fire_protection:
+    cap: 10
+  feather_falling:
+    cap: 10
+  unbreaking:
+    cap: 10
+  fortune:
+    cap: 10
+  looting:
+    cap: 10
+  knockback:
+    cap: 10
+  punch:
+    cap: 10
+  respiration:
+    cap: 10
+  thorns:
+    cap: 10
+  impaling:
+    cap: 10
+  sweeping_edge:
+    cap: 8
+  piercing:
+    cap: 10
+  depth_strider:
+    cap: 8
+  loyalty:
+    cap: 8
+  riptide:
+    cap: 6
+  lure:
+    cap: 8
+  luck_of_the_sea:
+    cap: 8
+  soul_speed:
+    cap: 6
+  swift_sneak:
+    cap: 6

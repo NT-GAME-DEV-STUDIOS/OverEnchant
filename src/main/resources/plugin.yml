@@ -1,0 +1,21 @@
+name: OverEnchant
+version: '${version}'
+main: dev.ntgame.overenchant.OverEnchantPlugin
+api-version: '1.26'
+authors: [NT-GAME-DEV-STUDIOS]
+description: Lets enchantments on an anvil be stacked past their vanilla max level, up to a configurable cap per enchantment.
+
+commands:
+  overenchant:
+    description: Manage the OverEnchant plugin
+    usage: /overenchant reload
+    permission: overenchant.admin
+    aliases: [oe]
+
+permissions:
+  overenchant.admin:
+    description: Allows reloading the OverEnchant config
+    default: op
+  overenchant.use:
+    description: Allows benefiting from overenchanted anvil merges
+    default: true
